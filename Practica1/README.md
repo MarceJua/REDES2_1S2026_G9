@@ -47,23 +47,26 @@ Se adjuntan las comprobaciones de estado de los protocolos configurados en Cisco
 **A. Verificación de VTP (VLAN Trunking Protocol)**
 Ejecución del comando `show vtp status` en un switch cliente comprobando la sincronización con el dominio `G9` y la recepción de la base de datos de VLANs.
 
-> _[INSERTAR CAPTURA DE "SHOW VTP STATUS" AQUÍ]_
+ <img width="859" height="462" alt="show_vtp_status" src="https://github.com/user-attachments/assets/bfeaa50a-a61e-49d9-bfc1-4b5238f3f481" />
+
 
 **B. Verificación de Puertos de Acceso y VLANs**
 Ejecución del comando `show vlan brief` comprobando que las VLANs se crearon correctamente y que los puertos conectados a los usuarios (Ej. Fa0/10) fueron asignados al grupo correcto.
 
-> _[INSERTAR CAPTURA DE "SHOW VLAN BRIEF" AQUÍ]_
+<img width="921" height="520" alt="show_vlan_brief" src="https://github.com/user-attachments/assets/7a35d909-cef1-4bfc-b2ef-fac292b30c75" />
+
 
 **C. Verificación de Enlaces Troncales**
 Ejecución del comando `show interfaces trunk` en un switch intermedio, confirmando que las interfaces permiten el tráfico etiquetado 802.1Q de múltiples VLANs.
 
-> _[INSERTAR CAPTURA DE "SHOW INTERFACES TRUNK" AQUÍ]_
+<img width="921" height="520" alt="show_interfaces_trunk" src="https://github.com/user-attachments/assets/7773fa6d-c6cc-414b-a320-55c9a6bae2cb" />
+
 
 **D. Pruebas de Conectividad (Capa 2)**
-Comprobación de conectividad a través de ICMP (`ping`) entre equipos pertenecientes a la **misma VLAN** dentro del **mismo edificio**.
-_(Ejemplo: PC2 a Laptop1 en VLAN 29)._
+Comprobación de conectividad a través de ICMP (`ping`) entre equipos pertenecientes a la **misma VLAN** dentro del **mismo edificio** y **diferentes VLAN**.
 
-> _[INSERTAR CAPTURA DE CONSOLA CON PING EXITOSO AQUÍ]_
+<img width="1540" height="575" alt="simple_pings" src="https://github.com/user-attachments/assets/f90094c0-c38f-483a-ae5a-8c18a7196ae9" />
+
 
 ---
 
