@@ -96,10 +96,98 @@ interface FastEthernet 0/10
 exit
 ```
 
+## Susana Paola González Contreras - 202000576
+
+### Sección: Inter-VLAN, Port-Security y Spanning Tree (STP)
+
+#### 1. Configuración de Enrutamiento Inter-VLAN (Edificio Izquierdo)
+Comandos implementados en el Router del lado izquierdo para levantar la interfaz física y configurar las subinterfaces correspondientes a Primaria, Básicos y Bachillerato, utilizando encapsulamiento dot1Q.
+
+```cisco
+enable
+configure terminal
+interface GigabitEthernet 0/1
+ no shutdown
+ exit
+
+interface GigabitEthernet 0/1.19
+ encapsulation dot1Q 19
+ ip address 192.178.19.1 255.255.255.0
+ exit
+
+interface GigabitEthernet 0/1.29
+ encapsulation dot1Q 29
+ ip address 192.178.29.1 255.255.255.0
+ exit
+
+interface GigabitEthernet 0/1.39
+ encapsulation dot1Q 39
+ ip address 192.178.39.1 255.255.255.0
+ exit
+```
+#### 2. Configuración de Enrutamiento Inter-VLAN (Edificio Derecho)
+Comandos implementados en el Router del lado derecho para las subinterfaces de las VLANs correspondientes a ese edificio.
+
+```cisco
+enable
+configure terminal
+interface GigabitEthernet 0/1
+ no shutdown
+ exit
+
+interface GigabitEthernet 0/1.69
+ encapsulation dot1Q 69
+ ip address 192.178.69.1 255.255.255.0
+ exit
+
+interface GigabitEthernet 0/1.79
+ encapsulation dot1Q 79
+ ip address 192.178.79.1 255.255.255.0
+ exit
+
+interface GigabitEthernet 0/1.89
+ encapsulation dot1Q 89
+ ip address 192.178.89.1 255.255.255.0
+ exit
+```
+
+
+#### 3. Configuración de Seguridad y STP (Edificio Izquierdo - PVST)
+Bloque de comandos utilizado para configurar la seguridad del puerto en modo acceso (VLAN 29) con límite de una dirección MAC dinámica (sticky) y apagado automático en caso de violación. Adicionalmente, se configura la modalidad Per-VLAN Spanning Tree.
+
+```cisco
+enable
+configure terminal
+interface FastEthernet 0/10
+ switchport mode access
+ switchport access vlan 29
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ exit
+
+spanning-tree mode pvst
+```
+#### 4. Configuración de Seguridad y STP (Edificio Derecho - Rapid PVST)
+Bloque de comandos utilizado para configurar la seguridad del puerto en modo acceso (VLAN 79) con la misma política de violación (shutdown). Se configura el protocolo de convergencia rápida Rapid PVST.
+```cisco
+enable
+configure terminal
+interface FastEthernet 0/10
+ switchport mode access
+ switchport access vlan 79
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ exit
+
+spanning-tree mode rapid-pvst
+```
+
+
 ## Jose David Mota González - 202306077
 
 ### Sección: x
 
-## Susana Paola González Contreras - 202000577
-
-### Sección: x
