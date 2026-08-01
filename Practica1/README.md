@@ -5,7 +5,7 @@
 
 ---
 
-## 🟢 FASE 1: Infraestructura Base, Nombres, VLANs y VTP
+## FASE 1: Infraestructura Base, Nombres, VLANs y VTP
 
 **Responsable:** Marcelo André Juarez Alfaro (202010367)
 
@@ -70,4 +70,71 @@ Comprobación de conectividad a través de ICMP (`ping`) entre equipos perteneci
 
 ---
 
-_(Fin de la Fase 1. El archivo `.pkt` actualizado fue subido al repositorio para dar paso a la Fase 2)._
+## FASE 2: Inter-VLAN, Port-Security y Spanning Tree (STP)
+
+**Responsable:** Susana Paola González Contreras (202000576)
+
+### 2.1 Objetivo de la Fase
+
+
+### 2.2 Tabla de Subinterfaces y Gateways
+
+| Interfaz Física | Subinterfaz | VLAN | Nombre/Departamento | IP (Default Gateway) | Máscara de Subred |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| GigabitEthernet0/1 | G0/1.19 | 19 | Primaria (Edificio Izquierdo) | 192.178.19.1 | 255.255.255.0 |
+| GigabitEthernet0/1 | G0/1.29 | 29 | Básicos (Edificio Izquierdo) | 192.178.29.1 | 255.255.255.0 |
+| GigabitEthernet0/1 | G0/1.39 | 39 | Bachillerato (Edificio Izquierdo) | 192.178.39.1 | 255.255.255.0 |
+| GigabitEthernet0/1 | G0/1.69 | 69 | Primaria (Edificio Derecho) | 192.178.69.1 | 255.255.255.0 |
+| GigabitEthernet0/1 | G0/1.79 | 79 | Básicos (Edificio Derecho) | 192.178.79.1 | 255.255.255.0 |
+| GigabitEthernet0/1 | G0/1.89 | 89 | Bachillerato (Edificio Derecho) | 192.178.89.1 | 255.255.255.0 |
+
+### 2.3 Bloque de Comandos CLI (Port-Security & STP)
+**Comandos del Lado Izquierdo (VLAN 29 y PVST)**
+```
+enable
+configure terminal
+interface FastEthernet 0/10
+ switchport mode access
+ switchport access vlan 29
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ exit
+
+spanning-tree mode pvst
+```
+
+
+**Comandos del Lado Derecho (VLAN 79 y Rapid PVST)**
+```
+enable
+configure terminal
+interface FastEthernet 0/10
+ switchport mode access
+ switchport access vlan 79
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ exit
+
+spanning-tree mode rapid-pvst
+```
+
+### 2.4 Tabla Comparativa de Convergencia STP
+
+| Edificio | Protocolo STP | Tiempo de Convergencia | Justificación |
+| :--- | :--- | :--- | :--- |
+| **Izquierdo** | PVST | 1 min 07.11 seg | Protocolo estándar. Requiere pasar por los estados de Listening y Learning (aprox. 30-50s) antes de llegar a Forwarding. |
+| **Derecho** | Rapid PVST | 1.60 seg | Protocolo optimizado (802.1w). Negocia activamente el estado del puerto, logrando una convergencia casi inmediata. |
+
+### 2.5 Capturas y Comandos de Verificación
+**show port-security interface**
+
+**show spanning-tree**
+
+**Pings Inter-VLAN dentro del mismo edificio**
+
+
+_(Fin de la Fase 2. El archivo `.pkt` actualizado fue subido al repositorio para dar paso a la Fase 2)._
