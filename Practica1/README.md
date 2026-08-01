@@ -75,7 +75,7 @@ Comprobación de conectividad a través de ICMP (`ping`) entre equipos perteneci
 **Responsable:** Susana Paola González Contreras (202000576)
 
 ### 2.1 Objetivo de la Fase
-
+El objetivo principal de esta sección consistió en diseñar, asegurar y validar una arquitectura de red escalable y redundante para la infraestructura de ambos edificios. Mediante la implementación de **Spanning Tree Protocol (PVST y Rapid PVST)**, se garantizó una topología de Capa 2 libre de bucles, optimizando los tiempos de convergencia y forzando la elección determinista de los puentes raíz (Root Bridges) para asegurar la disponibilidad de la red. Simultáneamente, se fortaleció la capa de acceso aplicando **Port-Security**, restringiendo las conexiones físicas exclusivamente a las direcciones MAC de los dispositivos finales autorizados para mitigar riesgos de intrusión. Finalmente, se estableció la comunicación entre redes lógicamente aisladas a través del enrutamiento **Inter-VLAN** (arquitectura *Router-on-a-Stick*), logrando una interconectividad exitosa y controlada entre los departamentos de Primaria, Básicos y Bachillerato.
 
 ### 2.2 Tabla de Subinterfaces y Gateways
 
@@ -131,10 +131,19 @@ spanning-tree mode rapid-pvst
 
 ### 2.5 Capturas y Comandos de Verificación
 **show port-security interface**
+![Evidencia de Port-Security con MAC no autorizada](imagenes/port-security.png)
 
 **show spanning-tree**
+![Verificación de Root Bridge en Edificio Izquierdo](imagenes/root1.png)
+
+![Verificación de Root Bridge en Edificio Derecho](imagenes/root2.png)
 
 **Pings Inter-VLAN dentro del mismo edificio**
+![Prueba de Ping Inter-VLAN Edificio Izquierdo](imagenes/ei.png)
+
+![Prueba de Ping Inter-VLAN Edificio Derecho](imagenes/ed.png)
 
 
-_(Fin de la Fase 2. El archivo `.pkt` actualizado fue subido al repositorio para dar paso a la Fase 2)._
+---
+
+_(Fin de la Fase 2. El archivo `.pkt` actualizado fue subido al repositorio para dar paso a la Fase 3)._
