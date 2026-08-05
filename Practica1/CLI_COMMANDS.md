@@ -188,6 +188,41 @@ spanning-tree mode rapid-pvst
 
 
 ## Jose David Mota González - 202306077
+### Fase: Enrutamiento Dinámico y Pruebas Globales
 
-### Sección: x
+---
 
+### 1. Tabla de Enrutamiento Dinámico
+
+| Router | Ubicación | Protocolo | AS / Área | Redes Declaradas (Network) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Router0** | Edificio Izquierdo | EIGRP | AS 9 | `10.10.12.0/24`<br>`192.178.19.0/24`<br>`192.178.29.0/24`<br>`192.178.39.0/24` |
+| **Router1** | Central (Enlace Izq) | EIGRP<br>RIP v2 | AS 9<br>N/A | `10.10.12.0/24` (EIGRP)<br>`10.10.11.0/24` (RIP) |
+| **Router4** | Central (Enlace Der) | RIP v2<br>OSPF | N/A<br>Área 0 | `10.10.11.0/24` (RIP)<br>`10.10.10.0/24` (OSPF) |
+| **Router3** | Edificio Derecho | OSPF | Área 0 | `10.10.10.0/24`<br>`192.178.69.0/24`<br>`192.178.79.0/24`<br>`192.178.89.0/24` |
+
+---
+
+### 2. Bloque de Comandos CLI
+A continuación se presenta la transcripción de los comandos utilizados para configurar el enrutamiento dinámico (EIGRP, RIP, OSPF) y la redistribución de rutas para garantizar la conectividad de extremo a extremo.
+
+#### **Edificio Izquierdo: Router0 (EIGRP)**
+```cisco
+enable
+config t
+! Asignar IP al enlace hacia Router1
+interface GigabitEthernet0/0
+ ip address 10.10.12.1 255.255.255.0
+ no shutdown
+exit
+
+! Configurar EIGRP
+router eigrp 9
+ network 10.10.12.0 0.0.0.255
+ network 192.178.19.0 0.0.0.255
+ network 192.178.29.0 0.0.0.255
+ network 192.178.39.0 0.0.0.255
+ no auto-summary
+exit
+
+#### **Núcleo de Red: Router1 (Traducción EIGRP - RIP)**
