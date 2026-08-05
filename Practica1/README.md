@@ -146,4 +146,49 @@ spanning-tree mode rapid-pvst
 
 ---
 
-_(Fin de la Fase 2. El archivo `.pkt` actualizado fue subido al repositorio para dar paso a la Fase 3)._
+## FASE 3: Enrutamiento Dinámico y Pruebas Globales
+
+**Responsable:** Jose David Mota González (202306077)
+
+### 3.1 Objetivo de la Fase
+El objetivo principal de esta fase consistió en habilitar la conectividad total de extremo a extremo en la infraestructura de red, unificando dominios que operan con diferentes protocolos de enrutamiento dinámico. Se implementó EIGRP (AS 9) para la red del edificio izquierdo, OSPF (Área 0) para el edificio derecho, y RIPv2 para los enlaces WAN del núcleo central. Para asegurar la convergencia e interoperabilidad de la topología, se configuró la redistribución mutua de rutas inyectando las métricas correspondientes en los routers de borde (Router1 y Router4). Con esto se garantizó la visibilidad de todas las subredes y el tráfico exitoso entre las VLANs de ambos edificios.
+
+### 3.2 Tabla de Enrutamiento Dinámico
+
+A continuación, se detalla la configuración lógica de los protocolos aplicados en cada router de la topología para establecer las adyacencias y propagar las redes.
+
+| Router | Ubicación | Protocolo | AS / Área | Redes Declaradas (Network) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Router0** | Edificio Izquierdo | EIGRP | AS 9 | `10.10.12.0/24`<br>`192.178.19.0/24`<br>`192.178.29.0/24`<br>`192.178.39.0/24` |
+| **Router1** | Central (Enlace Izq) | EIGRP<br>RIP v2 | AS 9<br>N/A | `10.10.12.0/24` (EIGRP)<br>`10.10.11.0/24` (RIP) |
+| **Router4** | Central (Enlace Der) | RIP v2<br>OSPF | N/A<br>Área 0 | `10.10.11.0/24` (RIP)<br>`10.10.10.0/24` (OSPF) |
+| **Router3** | Edificio Derecho | OSPF | Área 0 | `10.10.10.0/24`<br>`192.178.69.0/24`<br>`192.178.79.0/24`<br>`192.178.89.0/24` |
+
+
+### 3.3 Evidencias de Configuración (Capturas de Verificación)
+
+Se adjuntan las comprobaciones de estado de las tablas de enrutamiento y conectividad global en Cisco Packet Tracer para respaldar la correcta redistribución y funcionalidad de la red:
+
+**A. Comprobación de Tablas de Enrutamiento**
+Ejecución del comando `show ip route` en los routers, confirmando el aprendizaje dinámico de rutas externas provenientes de la redistribución (etiquetas **D EX** para EIGRP y **O E2** para OSPF).
+
+![Comprobación de Rutas Redistribuidas en Router0](imagenes/ip_show_route_0.png)
+![Comprobación de Rutas Redistribuidas en Router1](imagenes/ip_show_route_1.png)
+![Comprobación de Rutas Redistribuidas en Router3](imagenes/ip_show_route_3.png)
+![Comprobación de Rutas Redistribuidas en Router4](imagenes/ip_show_route_4.png)
+
+**B. Matriz de Pruebas Globales (Conectividad Extremo a Extremo)**
+Comprobación de conectividad a través de ICMP (`ping`) entre equipos de diferentes departamentos y edificios, atravesando el núcleo central de la red.
+
+![Prueba de Ping desde VLAN 29 (Edificio Izquierdo) hacia VLAN 69 (Edificio Derecho)](imagenes/ping_by_vlan29_to_vlan69.png)
+![Prueba de Ping desde VLAN 39 (Edificio Izquierdo) hacia VLAN 89 (Edificio Derecho)](imagenes/ping_by_vlan39_to_vlan89.png)
+![Prueba de Ping desde VLAN 79 (Edificio Derecho) hacia VLAN 19 (Edificio Izquierdo)](imagenes/ping_by_vlan19_to_vlan79.png)
+
+**C. Topología Consolidada**
+Vista general de la arquitectura de red finalizada, completamente convergida y con todos los enlaces físicos activos.
+
+![Topología Final de la Red Monte Alto](imagenes/topologia.png)
+
+---
+
+*(Fin de la Fase 3 y consolidación del proyecto. El archivo `.pkt` finalizado ha sido verificado e integrado en la rama de producción).*
