@@ -18,3 +18,23 @@
 | Multicapa Piso 1 - Router1 | 10.2.9.4/30 | 10.2.9.5 - 10.2.9.6 | Multicapa: 10.2.9.5 / Router1: 10.2.9.6 |
 | Multicapa Datacenter - Router2 | 10.2.9.20/30 | 10.2.9.21 - 10.2.9.22 | Multicapa: 10.2.9.21 / Router2: 10.2.9.22 |
 | Multicapa Datacenter - Router3 | 10.2.9.24/30 | 10.2.9.25 - 10.2.9.26 | Multicapa: 10.2.9.25 / Router3: 10.2.9.26 |
+
+## Gestión de VLANs
+Se implementó la segmentación lógica de la red mediante la creación de cuatro VLANs principales, asignadas según los requerimientos de los distintos departamentos de la biblioteca:
+* **VLAN 19 (ADMIN):** Asignada a los equipos del personal de administración en el Piso 1.
+* **VLAN 29 (ESTUDIANTES):** Asignada a las computadoras de los estudiantes en el Piso 1.
+* **VLAN 39 (WEB_SERVERS):** Dedicada a aislar el tráfico del servidor HTTP/DNS en el Datacenter.
+* **VLAN 49 (DHCP_SERVERS):** Dedicada al servidor que proveerá el direccionamiento dinámico a toda la red.
+
+Estas VLANs fueron creadas tanto en los switches multicapa de distribución como en los switches de acceso perimetrales (Capa 2), garantizando que los dispositivos finales puedan etiquetar su tráfico correctamente.
+
+## Agregación de Enlaces (LACP)
+Para interconectar los edificios (Piso 1, Piso 2, Piso 3 y Datacenter) garantizando tolerancia a fallos y un alto ancho de banda, se configuró el protocolo LACP.
+* Se utilizaron 4 interfaces FastEthernet físicas por cada conexión entre edificios.
+* Los grupos de canales (Port-Channels 1, 2 y 3) fueron configurados en `mode active`, lo que permite que las interfaces negocien activamente la formación del enlace troncal, asegurando que si un cable físico sufre un corte, el tráfico se redistribuya automáticamente por los cables restantes sin pérdida de conectividad.
+
+## Alta Disponibilidad (HSRP)
+Se implementó el protocolo HSRP para asegurar que las VLANs mantengan su salida hacia otras redes incluso si un router de distribución falla.
+* **Configuración Piso 1:** El Router 1 fue configurado como el equipo `Active` (Prioridad 110) para las VLANs 19 y 29, mientras que el Router 2 quedó como `Standby` (Prioridad 100 por defecto).
+* **Configuración Datacenter:** El Router 1 del Datacenter actúa como equipo principal (Prioridad 110) para las VLANs 39 y 49, con el Router 2 como respaldo.
+* Se activó la función `preempt` en todos los routers principales. Esto asegura que, si el router primario sufre una caída y luego se reinicia, retomará automáticamente su rol de líder sin necesidad de intervención manual, devolviendo la red a su estado óptimo.
