@@ -50,11 +50,11 @@ Se implementó el protocolo HSRP para asegurar que las VLANs mantengan su salida
 
 - **Servidor Central (Server1):** Se configuraron los pools DHCP para la red cableada (VLANs 19 y 29) y para las redes inalámbricas (WLANs del Piso 2 y 3). Todos los pools apuntan al servidor DNS 192.198.100.2.
 
-![image.png](docu%20redes/image.png)
+![image.png](img/image.png)
 
 - **Routers Inalámbricos (WRT300N):** Los 4 routers están configurados con "Automatic Configuration - DHCP" en su interfaz de Internet, recibiendo IPs de sus respectivas VLANs segmentadas para repartir el direccionamiento a los dispositivos finales.
 
-![image.png](docu%20redes/image%201.png)
+![image.png](img/image%201.png)
 
 **4. Configuración de Servidor WEB y DNS**
 
@@ -65,11 +65,11 @@ Se implementó el protocolo HSRP para asegurar que las VLANs mantengan su salida
 **5. Verificación de la Infraestructura (Comandos Show)**
 
 - **Enrutamiento EIGRP:**
-  ![image.png](docu%20redes/image%202.png)
+  ![image.png](img/image%202.png)
 - **Redundancia HSRP:**
-  ![image.png](docu%20redes/image%203.png)
+  ![image.png](img/image%203.png)
 - **Agregación de Enlaces LACP:**
-  ![image.png](docu%20redes/image%204.png)
+  ![image.png](img/image%204.png)
 
 **6. Pruebas de Conectividad (Pings)**
 
